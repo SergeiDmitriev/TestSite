@@ -6,10 +6,10 @@
 </head>
 <body>
 <h3>
-    {{ category_name }}
+    {{ category.name }}
 </h3>
 <p>
-    {{ category_description }}
+    {{ category.description}}
 </p>
 <table>
     <tr>
@@ -19,7 +19,7 @@
         <th>
             Описание
         </th>
-        {% for product in products %}
+        {% for product in category.product_set.all %}
             <tr>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
