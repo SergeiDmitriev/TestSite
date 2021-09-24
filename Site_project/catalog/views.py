@@ -24,8 +24,8 @@ class HomeTemplateView(TemplateView):
         return context
 
 
-def category_view(request, category_id):
-        cat = Category.objects.prefetch_related("product_set").filter(id=category_id).first()
+def category_view(request, category_slug):
+        cat = Category.objects.prefetch_related("product_set").filter(slug=category_slug).first()
         return render(
             request,
             'catalog/product.html',

@@ -5,6 +5,6 @@ app_name = 'catalog'
 
 urlpatterns = [
     path('', views.HomeTemplateView.as_view(), name='home'),
-    path('<int:category_id>/', views.category_view, name='category_view'),
+    path('<slug:category_slug>/', views.category_view, name='category_view'),
 
 ]
