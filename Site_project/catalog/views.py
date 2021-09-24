@@ -25,9 +25,11 @@ class HomeTemplateView(TemplateView):
 
 
 def category_view(request, category_id):
-        prod = Product.objects.filter(category_id=category_id).all()
+        prod = Product.objects.filter(category_id=category_id)
         return render(
             request,
             'catalog/product.html',
-            {"products": prod}
+            {"products": prod.all(),
+             "category_name": prod.first().category.name,
+             "category_description": prod.first().category.description}
         )

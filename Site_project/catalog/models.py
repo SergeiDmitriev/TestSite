@@ -6,6 +6,10 @@ class Category(models.Model):
     description = models.TextField(max_length=256, verbose_name='Описание')
     slug = models.SlugField(max_length=32, unique=True, default='test')
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
     def __str__(self):
         return self.name
 
