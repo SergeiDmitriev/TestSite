@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+
+<ul>
+    {% for item in nav_items %}
+        <li>
+            <a href="{% url 'catalog:category_view' item.slug %}"> {{ item.name }} </a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <div>
+        <span>{{ user.username }}</span>
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" height="25" width="25">
+        {% endif %}
+    </div>
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

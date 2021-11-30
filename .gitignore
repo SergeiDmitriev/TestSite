@@ -1,3 +1,9 @@
 .idea
 
+**/__pycache__
+
 venv
+
+assets
+
+db.sqlite3
