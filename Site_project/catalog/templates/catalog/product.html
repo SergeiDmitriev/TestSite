@@ -5,18 +5,24 @@
     <title>Products</title>
 </head>
 <body>
+<h3>
+    {{ category.name }}
+</h3>
+<p>
+    {{ category.description}}
+</p>
 <table>
     <tr>
         <th>
-            ID
-        </th>
-        <th>
             Наименование
         </th>
-        {% for product in products %}
+        <th>
+            Описание
+        </th>
+        {% for product in category.product_set.all %}
             <tr>
-                <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
             </tr>
         {% endfor %}
     </tr>

@@ -10,3 +10,13 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.Modifier)
+class ModifierAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.ModifierGroup)
+class ModifierGroupAdmin(admin.ModelAdmin):
+    pass

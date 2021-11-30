@@ -7,7 +7,7 @@
 <body>
 {% for category in categories %}
     <div>
-        <a href="{% url 'catalog:category_view' category.id%}"> {{ category.name }} </a>
+        <a href="{% url 'catalog:category_view' category.slug%}"> {{ category.name }} </a>
     </div>
 {% endfor %}
 </body>
