@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+
+    <table>
+        <tr>
+            <th>Наименование товара</th>
+            <th>Цена</th>
+            <th>Количество</th>
+        </tr>
+        {% for product in cart_products %}
+            <tr>
+                <td>{{ product.product.name }}</td>
+                <td>{{ product.product.price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>
+                    <form method="post" action="{% url 'cart:change_quantity' product.id %}">
+                        {% csrf_token %}
+                        <div>
+                            <input name="quantity"
+                                   max="{{ product.product.quantity }}"
+                                   value="{{ product.quantity }}">
+                            <button href="{% url 'cart:change_quantity' product.id %}">Change</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong>Total</strong></td>
+        <td><strong>{{ full_price }}</strong></td>
+    </tr>
+
+{% endblock %}

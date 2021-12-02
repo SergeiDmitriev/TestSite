@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    {% load static %}
+    {% load widget_tweaks %}
+    <link rel="stylesheet" href="{% static 'authentication/styles.css' %}">
+</head>
+<body>
+<form
+        method="post"
+        action="{% url 'authentication:registration' %}"
+        enctype="multipart/form-data"
+>
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="form-row">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="error-message">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <button type="submit">Зарегистрироваться</button>
+
+    <p>Если аккаунт?</p>
+    <a href="{% url 'authentication:login' %}">Войти</a>
+</form>
+</body>
+</html>

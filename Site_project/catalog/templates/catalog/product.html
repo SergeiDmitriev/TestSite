@@ -1,31 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-</head>
-<body>
-<h3>
-    {{ category.name }}
-</h3>
-<p>
-    {{ category.description}}
-</p>
-<table>
-    <tr>
-        <th>
-            Наименование
-        </th>
-        <th>
-            Описание
-        </th>
-        {% for product in category.product_set.all %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-            </tr>
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <h3>
+        {{ product.name }}
+    </h3>
+    <p>
+        {{ product.description }}
+    </p>
+
+    {% if product.productimage_set.all %}
+        {% for image in product.productimage_set.all %}
+            <div>
+                <img src="{{ image.image.url }}" alt="{{ product.name }}">
+            </div>
         {% endfor %}
-    </tr>
-</table>
-</body>
-</html>
+    {% endif %}
+
+    {% if not is_in_cart %}
+        <div>
+            <a href="{% url 'cart:add' product.slug %}">Add To Cart</a>
+        </div>
+    {% else %}
+        <div>
+            <a href='{% url 'cart:cart' %}'>In Cart</a>
+        </div>
+    {% endif %}
+{% endblock %}

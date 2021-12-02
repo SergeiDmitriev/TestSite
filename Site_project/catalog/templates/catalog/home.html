@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Categories</title>
-</head>
-<body>
-{% for category in categories %}
-    <div>
-        <a href="{% url 'catalog:category_view' category.slug%}"> {{ category.name }} </a>
-    </div>
-{% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+    {% for category in categories %}
+        <div>
+            <a href="{% url 'catalog:category_view' category.slug %}"> {{ category.name }} </a>
+        </div>
+    {% endfor %}
+{% endblock %}
