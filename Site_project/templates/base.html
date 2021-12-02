@@ -9,6 +9,16 @@
 </head>
 <body>
 
+{% if user.is_authenticated %}
+    <div align="right">
+        <a href='{% url 'cart:cart' %}'>Корзина</a>
+        <span>{{ user.username }}</span>
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" height="25" width="25">
+        {% endif %}
+    </div>
+{% endif %}
+
 <ul>
     {% for item in nav_items %}
         <li>
@@ -16,15 +26,6 @@
         </li>
     {% endfor %}
 </ul>
-
-{% if user.is_authenticated %}
-    <div>
-        <span>{{ user.username }}</span>
-        {% if user.avatar %}
-            <img src="{{ user.avatar.url }}" height="25" width="25">
-        {% endif %}
-    </div>
-{% endif %}
 
 {% block content %}
 {% endblock %}

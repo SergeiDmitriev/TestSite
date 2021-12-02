@@ -13,18 +13,18 @@
     {% if product.productimage_set.all %}
         {% for image in product.productimage_set.all %}
             <div>
-                <img src="{{ image.image.url }}" alt="{{ product.name }}">
+                <img src="{{ image.cart_image.url }}" alt="{{ product.name }}">
             </div>
         {% endfor %}
     {% endif %}
 
     {% if not is_in_cart %}
         <div>
-            <a href="{% url 'cart:add' product.slug %}">Add To Cart</a>
+            <a href="{% url 'cart:add_to_cart' product.slug %}">Добавить в корзину</a>
         </div>
     {% else %}
         <div>
-            <a href='{% url 'cart:cart' %}'>In Cart</a>
+            <a href='{% url 'cart:cart' %}'>В корзину</a>
         </div>
     {% endif %}
 {% endblock %}

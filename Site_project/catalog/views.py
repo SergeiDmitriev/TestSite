@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 
-from cart.models import CartProduct
+from cart.models import CartProduct, Customer
 from catalog.models import Category, Product
 
 
@@ -57,9 +57,13 @@ def product_view(request: WSGIRequest, product_slug: str) -> HttpResponse:
             .filter(slug=product_slug)
             .first()
         )
+
+        customer, _ = Customer.objects.get_or_create(user=request.user)
+        customer.save()
+
         is_in_cart = CartProduct.objects.filter(
             product=product,
-            cart__user=request.user,
+            cart__customer=customer,
             cart__active=True).first()
 
         context = {
@@ -73,4 +77,3 @@ def product_view(request: WSGIRequest, product_slug: str) -> HttpResponse:
         'catalog/product.html',
         context
     )
-

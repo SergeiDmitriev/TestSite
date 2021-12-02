@@ -1,11 +1,12 @@
-from django.db import models
 from django.contrib.auth.models import User
-from catalog.models import Product
 from django.conf import settings
+from django.db import models
+
+from catalog.models import Product
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True)
     active = models.BooleanField(default=True)
 
 
@@ -20,6 +21,6 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
     products = models.ManyToManyField('CartProduct')
     date = models.DateField(auto_now=True)

@@ -1,30 +1,40 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.core.handlers.wsgi import WSGIRequest
+from django.shortcuts import render, redirect
+from django.urls import reverse
 
-from catalog.views import HomeView
-from .models import Cart, CartProduct, Order, Customer
 from catalog.models import Product
+from .models import Cart, CartProduct, Customer
 
 
 @login_required
-def add(request, product_slug):
-    slug_product = Product.objects.get(slug=product_slug)
-    new_cart, _ = Cart.objects.get_or_create(user=request.user, is_active=True)
-    new_product, _ = CartProduct.objects.get_or_create(product=slug_product, cart=new_cart)
+def add_to_cart(request: WSGIRequest, product_slug: str):
+    product = Product.objects.get(slug=product_slug)
+
+    customer, _ = Customer.objects.get_or_create(user=request.user)
+    customer.save()
+
+    new_cart, _ = Cart.objects.get_or_create(customer=customer, active=True)
+    new_cart.save()
+
+    CartProduct.objects.get_or_create(product=product, cart=new_cart)
     return redirect(reverse('catalog:home'))
 
 
 @login_required
-def cart(request):
+def cart(request: WSGIRequest):
     user = request.user
+
     customer, _ = Customer.objects.get_or_create(user=user)
     customer.save()
-    cart_id = Cart.objects.filter(user_id=user.id).first()
-    cart_products = CartProduct.objects.select_related('product').filter(cart_id=cart_id)
-    full_price = total_sum(cart_products)
+
+    cart = Cart.objects.filter(customer=customer).first()
     if not cart:
         return redirect(reverse('catalog:home'))
+
+    cart_products = CartProduct.objects.select_related('product').filter(cart=cart)
+    full_price = total_sum(cart_products)
+
     context = {'cart_products': cart_products,
                'full_price': full_price}
     return render(request, 'cart/cart.html', context)
@@ -39,7 +49,7 @@ def total_sum(cart_products):
 
 
 @login_required
-def change_quantity(request, product_id):
+def change_quantity(request: WSGIRequest, product_id: int):
     cart_product = CartProduct.objects.get(id=product_id)
     quantity_from_html = int(request.POST.get('quantity'))
     if quantity_from_html <= cart_product.product.quantity:
